@@ -17,12 +17,20 @@ export const Counter = () => {
   const isIncDisabled = counter >= 5;
   const isResetDisabled = counter === 0;
 
+  const onClickIncrementHandler = () => {
+    increment();
+  };
+
+  const onClickResetIncrementHandler = () => {
+    resetIncrement();
+  };
+
   return (
     <div className={'counter'}>
       <div className={`${counter >= 5 ? 'red' : ''} display`}>{counter}</div>
       <div className={'block'}>
-        <Button title={'inc'} onClick={() => increment()} disabled={isIncDisabled}>inc</Button>
-        <Button title={'reset'} onClick={() => resetIncrement()} disabled={isResetDisabled}>reset</Button>
+        <Button title={'inc'} onClick={onClickIncrementHandler} disabled={isIncDisabled} />
+        <Button title={'reset'} onClick={onClickResetIncrementHandler} disabled={isResetDisabled} />
       </div>
     </div>
   )
