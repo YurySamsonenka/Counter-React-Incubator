@@ -1,0 +1,14 @@
+
+.button {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+  monospace;
+  font-size: 30px;
+  color: var(--bgc-color);
+  border: none;
+  border-radius: 5px;
+  background-color: var(--main-color);
+}
+
+.button:disabled {
+  opacity: 0.5;
+}

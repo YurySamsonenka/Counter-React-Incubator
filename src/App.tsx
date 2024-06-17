@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import { Counter } from './counter/Counter';
 
 function App() {
   const [counter, setCounter] = useState(0);
@@ -18,11 +19,8 @@ function App() {
 
   return (
     <div className="App">
-      <div className={counter >= 5 ? 'red' : ''}>{counter}</div>
-      <div className={'block'}>
-        <button onClick={() => increment()} disabled={isIncDisabled}>inc</button>
-        <button onClick={() => resetIncrement()} disabled={isResetDisabled}>reset</button>
-      </div>
+      <Counter />
+      <Counter />
     </div>
   );
 }
