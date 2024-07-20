@@ -1,38 +1,44 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Counter.style.css';
 import { Button } from '../button/Button';
 
-export const Counter = () => {
+export type CounterPropsType = {
+	counterId: string
+	startValue: number
+	endValue: number
+	currentValue: number
+	increment: (counterId: string, prevValue: number) => void
+	resetIncrement: (counterId: string) => void
+}
 
-  const [counter, setCounter] = useState(0);
+export const Counter = ({
+	counterId,
+	startValue,
+	endValue,
+	currentValue,
+	increment,
+	resetIncrement,
+}: CounterPropsType) => {
 
-  const increment = () => {
-    setCounter(counter + 1);
-  };
+	const isIncDisabled = currentValue >= endValue;
+	const isResetDisabled = currentValue === startValue;
 
-  const resetIncrement = () => {
-    setCounter(0);
-  };
+	const onClickIncrementHandler = () => {
+		increment(counterId, startValue);
+	};
 
-  const isIncDisabled = counter >= 5;
-  const isResetDisabled = counter === 0;
+	const onClickResetIncrementHandler = () => {
+		resetIncrement(counterId);
+	};
 
-  const onClickIncrementHandler = () => {
-    increment();
-  };
-
-  const onClickResetIncrementHandler = () => {
-    resetIncrement();
-  };
-
-  return (
-    <div className={'counter'}>
-      <div className={`${counter >= 5 ? 'red' : ''} display`}>{counter}</div>
-      <div className={'block'}>
-        <Button title={'inc'} onClick={onClickIncrementHandler} disabled={isIncDisabled} />
-        <Button title={'reset'} onClick={onClickResetIncrementHandler} disabled={isResetDisabled} />
-      </div>
-    </div>
-  )
-    ;
+	return (
+		<div className={'counter'}>
+			<div className={`${currentValue >= endValue ? 'red' : ''} display`}>{currentValue}</div>
+			<div className={'block'}>
+				<Button title={'inc'} onClick={onClickIncrementHandler} disabled={isIncDisabled} />
+				<Button title={'reset'} onClick={onClickResetIncrementHandler} disabled={isResetDisabled} />
+			</div>
+		</div>
+	)
+		;
 };

@@ -1,28 +1,56 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { Counter } from './counter/Counter';
+import { Counter, CounterPropsType } from './counter/Counter';
+import { v1 } from 'uuid';
 
 function App() {
-  const [counter, setCounter] = useState(0);
+	type CounterConfigType = {
+		counterId: string
+		startValue: number
+		endValue: number
+	}
 
-  const increment = () => {
-    setCounter(counter + 1);
-  };
+	type CurrentValueType = {
+		[counterId: string]: number
+	}
 
-  const resetIncrement = () => {
-    setCounter(0);
-  };
+	const [countersConfig, setCountersConfig] = useState<Array<CounterConfigType>>([
+		{ counterId: v1(), startValue: 5, endValue: 10 },
+		{ counterId: v1(), startValue: 1, endValue: 7 },
+	]);
 
-  const isIncDisabled = counter >= 5;
-  const isResetDisabled = counter === 0;
+	const currentValuesCreator = countersConfig.reduce<Record<string, number>>((acc, curr): CurrentValueType => {
+		acc[curr.counterId] = curr.startValue;
+		return acc;
+	}, {});
 
-  return (
-    <div className="App">
-      <Counter />
-      <Counter />
-    </div>
-  );
+	const [currentValues, setCurrentValues] = useState(currentValuesCreator);
+
+	const increment = (counterId: string) => {
+		setCurrentValues({ ...currentValues, [counterId]: currentValues[counterId] + 1 });
+	};
+
+	const resetIncrement = (counterId: string) => {
+		const configForCounter = countersConfig.find(c => c.counterId === counterId);
+		if (configForCounter) {
+			setCurrentValues({ ...currentValues, [counterId]: configForCounter?.startValue });
+		}
+	};
+
+	return (
+		<div className="App">
+			{countersConfig.map(c => {
+				return (<Counter
+					key={c.counterId}
+					counterId={c.counterId}
+					startValue={c.startValue}
+					endValue={c.endValue}
+					currentValue={currentValues[c.counterId]}
+					increment={increment}
+					resetIncrement={resetIncrement} />);
+			})}
+		</div>
+	);
 }
 
 export default App;
