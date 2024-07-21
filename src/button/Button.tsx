@@ -3,7 +3,7 @@ import './Button.style.css';
 type ButtonPropsType = {
   title: string
   onClick: () => void
-  disabled: boolean
+  disabled?: boolean
 }
 
 export const Button = ({ title, onClick, disabled }: ButtonPropsType) => {

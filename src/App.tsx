@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './App.css';
 import { Counter, CounterPropsType } from './counter/Counter';
 import { v1 } from 'uuid';
+import { CounterSetting } from './counterSetting/CounterSetting';
 
 function App() {
 	type CounterConfigType = {
@@ -19,7 +20,8 @@ function App() {
 		{ counterId: v1(), startValue: 1, endValue: 7 },
 	]);
 
-	const currentValuesCreator = countersConfig.reduce<Record<string, number>>((acc, curr): CurrentValueType => {
+	const currentValuesCreator = countersConfig.reduce<Record<string, number>>((acc,
+		curr): CurrentValueType => {
 		acc[curr.counterId] = curr.startValue;
 		return acc;
 	}, {});
@@ -37,17 +39,37 @@ function App() {
 		}
 	};
 
+	const setCounterSettings = (counterId: string, startValue: number, endValue: number) => {
+		setCountersConfig(countersConfig.map(c => c.counterId === counterId ? {
+			...c,
+			startValue,
+			endValue,
+		} : c));
+		setCurrentValues({ ...currentValues, [counterId]: startValue });
+	};
+
+
+
 	return (
 		<div className="App">
 			{countersConfig.map(c => {
-				return (<Counter
-					key={c.counterId}
-					counterId={c.counterId}
-					startValue={c.startValue}
-					endValue={c.endValue}
-					currentValue={currentValues[c.counterId]}
-					increment={increment}
-					resetIncrement={resetIncrement} />);
+				const monitoringSettingsChanges = () => {
+
+				};
+
+				return (<div key={c.counterId}>
+					<Counter
+						counterId={c.counterId}
+						startValue={c.startValue}
+						endValue={c.endValue}
+						currentValue={currentValues[c.counterId]}
+						increment={increment}
+						resetIncrement={resetIncrement} />
+					<CounterSetting counterId={c.counterId}
+						startValue={c.startValue}
+						endValue={c.endValue}
+						setCounterSettings={setCounterSettings} />
+				</div>);
 			})}
 		</div>
 	);

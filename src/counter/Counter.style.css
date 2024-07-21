@@ -30,4 +30,5 @@
   border: 3px solid var(--main-color);
   border-radius: 10px;
   column-gap: 10px;
+  justify-content: space-evenly;
 }
