@@ -107,20 +107,21 @@ function App() {
 						counterId={c.counterId}
 						startValue={c.startValue}
 						endValue={c.endValue}
+						startValueFromInput = {trackingChangesInInputValues[c.counterId].startValue}
+						endValueFromInput = {trackingChangesInInputValues[c.counterId].endValue}
 						currentValue={currentCounterValues[c.counterId]}
 						increment={increment}
 						resetIncrement={resetIncrement}
-						startValueFromInput = {trackingChangesInInputValues[c.counterId].startValue}
-						endValueFromInput = {trackingChangesInInputValues[c.counterId].endValue}
 					/>
-					<CounterSetting counterId={c.counterId}
+					<CounterSetting
+						counterId={c.counterId}
 						startValue={c.startValue}
 						endValue={c.endValue}
 						startValueFromInput={trackingChangesInInputValues[c.counterId].startValue}
 						endValueFromInput = {trackingChangesInInputValues[c.counterId].endValue}
-						setCounterSettings={setCounterSettings}
 						onChangeStartValueSetting={onChangeStartValueSetting}
 						onChangeEndValueSetting={onChangeEndValueSetting}
+						setCounterSettings={setCounterSettings}
 					/>
 				</div>);
 			})}

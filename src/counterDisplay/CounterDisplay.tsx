@@ -6,22 +6,22 @@ export type CounterPropsType = {
 	counterId: string
 	startValue: number
 	endValue: number
+	startValueFromInput: number
+	endValueFromInput: number
 	currentValue: number
 	increment: (counterId: string, prevValue: number) => void
 	resetIncrement: (counterId: string) => void
-	startValueFromInput: number
-	endValueFromInput: number
 }
 
 export const CounterDisplay = ({
 	counterId,
 	startValue,
 	endValue,
+	startValueFromInput,
+	endValueFromInput,
 	currentValue,
 	increment,
 	resetIncrement,
-	startValueFromInput,
-	endValueFromInput,
 }: CounterPropsType) => {
 	const isIncDisabled = currentValue >= endValue;
 	const isResetDisabled = currentValue === startValue;

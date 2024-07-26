@@ -8,9 +8,9 @@ export type CounterSettingPropsType = {
 	endValue: number
 	startValueFromInput: number
 	endValueFromInput: number
-	setCounterSettings: (counterId: string, startValue: number, endValue: number) => void
 	onChangeStartValueSetting: (e: React.ChangeEvent<HTMLInputElement>, counterId: string) => void
 	onChangeEndValueSetting: (e: React.ChangeEvent<HTMLInputElement>, counterId: string) => void
+	setCounterSettings: (counterId: string, startValue: number, endValue: number) => void
 }
 
 export const CounterSetting = ({
@@ -19,9 +19,9 @@ export const CounterSetting = ({
 	endValue,
 	startValueFromInput,
 	endValueFromInput,
-	setCounterSettings,
 	onChangeStartValueSetting,
 	onChangeEndValueSetting,
+	setCounterSettings,
 }: CounterSettingPropsType) => {
 
 	const onChangeStartValueSettingHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
