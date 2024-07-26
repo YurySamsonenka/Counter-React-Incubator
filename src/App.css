@@ -1,3 +1,9 @@
+:root {
+  --main-color: #61dafb;
+  --bgc-color: #282c34;
+  --warning-color: #ff0000;
+}
+
 .App {
   display: flex;
   align-items: center;
@@ -9,8 +15,12 @@
   column-gap: 20px;
 }
 
-
-:root {
-  --main-color: #61dafb;
-  --bgc-color: #282c34;
+.counter {
+  display: flex;
+  flex-direction: column;
+  min-width: 350px;
+  padding: 15px;
+  border: 3px solid var(--main-color);
+  border-radius: 10px;
+  row-gap: 10px;
 }

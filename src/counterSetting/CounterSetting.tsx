@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './CounterSetting.style.css';
 import { Button } from '../button/Button';
 
@@ -6,52 +6,72 @@ export type CounterSettingPropsType = {
 	counterId: string
 	startValue: number
 	endValue: number
+	startValueFromInput: number
+	endValueFromInput: number
 	setCounterSettings: (counterId: string, startValue: number, endValue: number) => void
+	onChangeStartValueSetting: (e: React.ChangeEvent<HTMLInputElement>, counterId: string) => void
+	onChangeEndValueSetting: (e: React.ChangeEvent<HTMLInputElement>, counterId: string) => void
 }
 
 export const CounterSetting = ({
 	counterId,
 	startValue,
 	endValue,
+	startValueFromInput,
+	endValueFromInput,
 	setCounterSettings,
+	onChangeStartValueSetting,
+	onChangeEndValueSetting,
 }: CounterSettingPropsType) => {
 
-	// const isIncDisabled = currentValue >= endValue;
-	// const isResetDisabled = currentValue === startValue;
+	const onChangeStartValueSettingHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		onChangeStartValueSetting(
+			e,
+			counterId);
+	}
 
-	const [initValue, setInitValue] = useState(startValue);
-	const [maxValue, setMaxValue] = useState(endValue);
-	console.log(counterId);
+	const onChangeEndValueSettingHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		onChangeEndValueSetting(
+			e,
+			counterId);
+	}
 
-	const [error, setError] = useState<boolean>(false);
-
-	const onChangeStartValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setMaxValue(+e.currentTarget.value);
+	const setCounterSettingsHandler = () => {
+		setCounterSettings(counterId, startValueFromInput, endValueFromInput);
 	};
-	const onChangeEndValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setInitValue(+e.currentTarget.value);
-	};
+
+	const checks = [startValueFromInput < 0,
+		startValueFromInput > endValueFromInput - 1,
+		startValue === startValueFromInput,
+		endValue === endValueFromInput];
 
 	return (
-		<div className={'counter'}>
-			<div className={`display-setting`}>
-				{error
-					? 'тасок нет'
-					: <div>
-						<div>
-							<label htmlFor="maxValue">max value:</label>
-							<input value={maxValue} type={'number'} id={'maxValue'} onChange={onChangeStartValueHandler} />
-						</div>
-						<div>
-							<label htmlFor="startValue">start value:</label>
-							<input value={initValue} type={'number'} id={'startValue'} onChange={onChangeEndValueHandler} />
-						</div>
-					</div>}
+		<div className={'counter-display'}>
+			<div className={`setting`}>
+				<div>
+					<label htmlFor="maxValue">max value:</label>
+					<input value={endValueFromInput}
+						type={'number'}
+						id={'maxValue'}
+						className={`setting-input ${checks[1]
+							? 'warning'
+							: ''}`}
+						onChange={onChangeEndValueSettingHandler} />
+				</div>
+				<div>
+					<label htmlFor="startValue">start value:</label>
+					<input value={startValueFromInput}
+						type={'number'}
+						id={'startValue'}
+						className={`setting-input ${checks[0] || checks[1] ? 'warning' : ''}`}
+						onChange={onChangeStartValueSettingHandler} />
+				</div>
 			</div>
-			<div className={'block'}>
-				<Button title={'set'} onClick={() => {
-					setCounterSettings(counterId, initValue, maxValue);
-				}} />
+			<div className={'btn-block'}>
+				<Button title={'set'}
+					onClick={setCounterSettingsHandler}
+					disabled={checks[0] || checks[1] ||
+						(checks[2] && checks[3])} />
 			</div>
 		</div>
 	)

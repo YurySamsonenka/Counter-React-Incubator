@@ -1,42 +1,93 @@
-import React, { useState } from 'react';
 import './App.css';
-import { Counter, CounterPropsType } from './counter/Counter';
+import React, { useState } from 'react';
 import { v1 } from 'uuid';
+import { CounterDisplay } from './counterDisplay/CounterDisplay';
 import { CounterSetting } from './counterSetting/CounterSetting';
 
 function App() {
 	type CounterConfigType = {
 		counterId: string
 		startValue: number
-		endValue: number
+		endValue: number,
 	}
 
 	type CurrentValueType = {
 		[counterId: string]: number
 	}
 
+	type trackingChangesInInputValuesType = {
+		[counterId: string]: InputValuesType
+	}
+
+	type InputValuesType = {
+		startValue: number
+		endValue: number
+	}
+
+	//TODO: сделать localStorage c id через v1()
+
 	const [countersConfig, setCountersConfig] = useState<Array<CounterConfigType>>([
-		{ counterId: v1(), startValue: 5, endValue: 10 },
-		{ counterId: v1(), startValue: 1, endValue: 7 },
+		{ counterId: 'asdfasdfsadfasd', startValue: 5, endValue: 10 },
+		{ counterId: 'asdfasdfasdfxzczxc', startValue: 3, endValue: 6 },
 	]);
 
-	const currentValuesCreator = countersConfig.reduce<Record<string, number>>((acc,
+	const currentCounterValuesCreator = countersConfig.reduce<Record<string, number>>((acc,
 		curr): CurrentValueType => {
 		acc[curr.counterId] = curr.startValue;
 		return acc;
 	}, {});
 
-	const [currentValues, setCurrentValues] = useState(currentValuesCreator);
+	const [currentCounterValues, setCurrentCounterValues] = useState(currentCounterValuesCreator);
+
+	const trackingChangesInInputValuesCreator = countersConfig.reduce<Record<string, InputValuesType>>(
+		(acc,
+			curr): trackingChangesInInputValuesType => {
+			acc[curr.counterId] = {
+				startValue: curr.startValue,
+				endValue: curr.endValue,
+			};
+			return acc;
+		},
+		{});
+
+	const [trackingChangesInInputValues, setTrackingChangesInInputValues] = useState<trackingChangesInInputValuesType>(
+		trackingChangesInInputValuesCreator);
 
 	const increment = (counterId: string) => {
-		setCurrentValues({ ...currentValues, [counterId]: currentValues[counterId] + 1 });
+		setCurrentCounterValues({
+			...currentCounterValues,
+			[counterId]: currentCounterValues[counterId] + 1,
+		});
 	};
 
 	const resetIncrement = (counterId: string) => {
 		const configForCounter = countersConfig.find(c => c.counterId === counterId);
 		if (configForCounter) {
-			setCurrentValues({ ...currentValues, [counterId]: configForCounter?.startValue });
+			setCurrentCounterValues({
+				...currentCounterValues,
+				[counterId]: configForCounter?.startValue,
+			});
 		}
+	};
+
+	const onChangeStartValueSetting = (e: React.ChangeEvent<HTMLInputElement>, counterId: string) => {
+		setTrackingChangesInInputValues({
+			...trackingChangesInInputValues,
+			[counterId]: {
+				...trackingChangesInInputValues[counterId],
+				startValue: +e.currentTarget.value,
+			},
+		});
+	};
+
+	const onChangeEndValueSetting = (e: React.ChangeEvent<HTMLInputElement>, counterId: string) => {
+		setTrackingChangesInInputValues({
+			...trackingChangesInInputValues,
+			[counterId]: {
+				...trackingChangesInInputValues[counterId],
+				endValue: +e.currentTarget.value,
+			},
+		});
 	};
 
 	const setCounterSettings = (counterId: string, startValue: number, endValue: number) => {
@@ -45,30 +96,32 @@ function App() {
 			startValue,
 			endValue,
 		} : c));
-		setCurrentValues({ ...currentValues, [counterId]: startValue });
+		setCurrentCounterValues({ ...currentCounterValues, [counterId]: startValue });
 	};
-
-
 
 	return (
 		<div className="App">
 			{countersConfig.map(c => {
-				const monitoringSettingsChanges = () => {
-
-				};
-
-				return (<div key={c.counterId}>
-					<Counter
+				return (<div key={c.counterId} className={'counter'}>
+					<CounterDisplay
 						counterId={c.counterId}
 						startValue={c.startValue}
 						endValue={c.endValue}
-						currentValue={currentValues[c.counterId]}
+						currentValue={currentCounterValues[c.counterId]}
 						increment={increment}
-						resetIncrement={resetIncrement} />
+						resetIncrement={resetIncrement}
+						startValueFromInput = {trackingChangesInInputValues[c.counterId].startValue}
+						endValueFromInput = {trackingChangesInInputValues[c.counterId].endValue}
+					/>
 					<CounterSetting counterId={c.counterId}
 						startValue={c.startValue}
 						endValue={c.endValue}
-						setCounterSettings={setCounterSettings} />
+						startValueFromInput={trackingChangesInInputValues[c.counterId].startValue}
+						endValueFromInput = {trackingChangesInInputValues[c.counterId].endValue}
+						setCounterSettings={setCounterSettings}
+						onChangeStartValueSetting={onChangeStartValueSetting}
+						onChangeEndValueSetting={onChangeEndValueSetting}
+					/>
 				</div>);
 			})}
 		</div>
