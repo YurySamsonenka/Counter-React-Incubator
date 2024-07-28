@@ -1,40 +1,74 @@
+//TODO: 1) Добавить тесты; 2) Добавить useMemo;
+
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { v1 } from 'uuid';
 import { CounterDisplay } from './counterDisplay/CounterDisplay';
 import { CounterSetting } from './counterSetting/CounterSetting';
 
+export type CounterConfigType = {
+	counterId: string
+	startValue: number
+	endValue: number,
+}
+
+type CurrentValueType = {
+	[counterId: string]: number
+}
+
+type trackingChangesInInputValuesType = {
+	[counterId: string]: InputValuesType
+}
+
+type InputValuesType = {
+	startValue: number
+	endValue: number
+}
+
 function App() {
-	type CounterConfigType = {
-		counterId: string
-		startValue: number
-		endValue: number,
-	}
-
-	type CurrentValueType = {
-		[counterId: string]: number
-	}
-
-	type trackingChangesInInputValuesType = {
-		[counterId: string]: InputValuesType
-	}
-
-	type InputValuesType = {
-		startValue: number
-		endValue: number
-	}
 
 	//TODO: сделать localStorage c id через v1()
 
-	const [countersConfig, setCountersConfig] = useState<Array<CounterConfigType>>([
-		{ counterId: 'asdfasdfsadfasd', startValue: 5, endValue: 10 },
-		{ counterId: 'asdfasdfasdfxzczxc', startValue: 3, endValue: 6 },
+	const getCounterConfig = (id: string, defaultStart: number, defaultEnd: number) => {
+		const counterLocalStorage = localStorage.getItem(id);
+		if (counterLocalStorage) {
+			const { startValue, endValue } = JSON.parse(counterLocalStorage);
+			return { counterId: id, startValue, endValue };
+		}
+		return { counterId: id, startValue: defaultStart, endValue: defaultEnd };
+	};
+
+	const [countersConfig, setCountersConfig] = useState<Array<CounterConfigType>>(() => [
+		getCounterConfig('abc', 6, 30),
+		getCounterConfig('2bca', 3, 6),
+		getCounterConfig('asdasd', 3, 15),
 	]);
+
+	useEffect(() => {
+		countersConfig.forEach(c => {
+			const counterLocalStorage = localStorage.getItem(c.counterId);
+
+			if (counterLocalStorage) {
+				const { startValue, endValue, currentValue } = JSON.parse(counterLocalStorage);
+				localStorage.setItem(c.counterId,
+					JSON.stringify({ startValue, endValue, currentValue }));
+			} else {
+				const { startValue, endValue } = c;
+				localStorage.setItem(c.counterId,
+					JSON.stringify({ startValue, endValue, currentValue: startValue }));
+			}
+		});
+	}, []);
 
 	const currentCounterValuesCreator = countersConfig.reduce<Record<string, number>>((acc,
 		curr): CurrentValueType => {
-		acc[curr.counterId] = curr.startValue;
+
+		const counterLocalStorage = localStorage.getItem(curr.counterId);
+		acc[curr.counterId] =
+			counterLocalStorage ? JSON.parse(counterLocalStorage).currentValue : curr.startValue;
+
 		return acc;
+
 	}, {});
 
 	const [currentCounterValues, setCurrentCounterValues] = useState(currentCounterValuesCreator);
@@ -42,11 +76,18 @@ function App() {
 	const trackingChangesInInputValuesCreator = countersConfig.reduce<Record<string, InputValuesType>>(
 		(acc,
 			curr): trackingChangesInInputValuesType => {
+
+			const counterLocalStorage = localStorage.getItem(curr.counterId);
+
 			acc[curr.counterId] = {
-				startValue: curr.startValue,
-				endValue: curr.endValue,
+				startValue: counterLocalStorage
+					? JSON.parse(counterLocalStorage).startValue
+					: curr.startValue,
+				endValue: counterLocalStorage ? JSON.parse(counterLocalStorage).endValue : curr.endValue,
 			};
+
 			return acc;
+
 		},
 		{});
 
@@ -65,7 +106,7 @@ function App() {
 		if (configForCounter) {
 			setCurrentCounterValues({
 				...currentCounterValues,
-				[counterId]: configForCounter?.startValue,
+				[counterId]: configForCounter.startValue,
 			});
 		}
 	};
@@ -107,8 +148,8 @@ function App() {
 						counterId={c.counterId}
 						startValue={c.startValue}
 						endValue={c.endValue}
-						startValueFromInput = {trackingChangesInInputValues[c.counterId].startValue}
-						endValueFromInput = {trackingChangesInInputValues[c.counterId].endValue}
+						startValueFromInput={trackingChangesInInputValues[c.counterId].startValue}
+						endValueFromInput={trackingChangesInInputValues[c.counterId].endValue}
 						currentValue={currentCounterValues[c.counterId]}
 						increment={increment}
 						resetIncrement={resetIncrement}
@@ -118,7 +159,7 @@ function App() {
 						startValue={c.startValue}
 						endValue={c.endValue}
 						startValueFromInput={trackingChangesInInputValues[c.counterId].startValue}
-						endValueFromInput = {trackingChangesInInputValues[c.counterId].endValue}
+						endValueFromInput={trackingChangesInInputValues[c.counterId].endValue}
 						onChangeStartValueSetting={onChangeStartValueSetting}
 						onChangeEndValueSetting={onChangeEndValueSetting}
 						setCounterSettings={setCounterSettings}

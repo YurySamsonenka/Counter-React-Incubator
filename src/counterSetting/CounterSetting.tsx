@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './CounterSetting.style.css';
 import { Button } from '../button/Button';
 
@@ -28,17 +28,31 @@ export const CounterSetting = ({
 		onChangeStartValueSetting(
 			e,
 			counterId);
-	}
+	};
 
 	const onChangeEndValueSettingHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		onChangeEndValueSetting(
 			e,
 			counterId);
-	}
+	};
 
 	const setCounterSettingsHandler = () => {
 		setCounterSettings(counterId, startValueFromInput, endValueFromInput);
 	};
+
+	useEffect(() => {
+		const counterLocalStorage = localStorage.getItem(counterId);
+
+		if (counterLocalStorage) {
+			localStorage.setItem(counterId,
+				JSON.stringify({
+					...JSON.parse(counterLocalStorage),
+					startValue: startValue,
+					endValue: endValue,
+				}));
+		}
+
+	}, [counterId, startValue, endValue]);
 
 	const checks = [startValueFromInput < 0,
 		startValueFromInput > endValueFromInput - 1,
