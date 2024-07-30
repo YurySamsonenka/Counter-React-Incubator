@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './CounterDisplay.style.css';
 import { Button } from '../button/Button';
 
@@ -38,15 +38,6 @@ export const CounterDisplay = ({
 		startValueFromInput > endValueFromInput - 1,
 		startValueFromInput !== startValue,
 		endValueFromInput !== endValue];
-
-	useEffect(() => {
-		const a = localStorage.getItem(counterId);
-
-		if (a) {
-			localStorage.setItem(counterId,
-				JSON.stringify({ ...JSON.parse(a), currentValue: currentValue }));
-		}
-	}, [currentValue]);
 
 	return (
 		<div className={'counter-display'}>

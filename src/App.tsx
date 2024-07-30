@@ -1,98 +1,53 @@
-//TODO: 1) Добавить тесты; 2) Добавить useMemo;
-
 import './App.css';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { v1 } from 'uuid';
 import { CounterDisplay } from './counterDisplay/CounterDisplay';
 import { CounterSetting } from './counterSetting/CounterSetting';
 
-export type CounterConfigType = {
-	counterId: string
-	startValue: number
-	endValue: number,
-}
-
-type CurrentValueType = {
-	[counterId: string]: number
-}
-
-type trackingChangesInInputValuesType = {
-	[counterId: string]: InputValuesType
-}
-
-type InputValuesType = {
-	startValue: number
-	endValue: number
-}
-
 function App() {
+	type CounterConfigType = {
+		counterId: string
+		startValue: number
+		endValue: number,
+	}
 
-	//TODO: сделать localStorage c id через v1()
+	type CurrentValueType = {
+		[counterId: string]: number
+	}
 
-	const getCounterConfig = (id: string, defaultStart: number, defaultEnd: number) => {
-		const counterLocalStorage = localStorage.getItem(id);
-		if (counterLocalStorage) {
-			const { startValue, endValue } = JSON.parse(counterLocalStorage);
-			return { counterId: id, startValue, endValue };
-		}
-		return { counterId: id, startValue: defaultStart, endValue: defaultEnd };
-	};
+	type trackingChangesInInputValuesType = {
+		[counterId: string]: InputValuesType
+	}
 
-	const [countersConfig, setCountersConfig] = useState<Array<CounterConfigType>>(() => [
-		getCounterConfig('abc', 6, 30),
-		getCounterConfig('2bca', 3, 6),
-		getCounterConfig('asdasd', 3, 15),
+	type InputValuesType = {
+		startValue: number
+		endValue: number
+	}
+
+	const counterId1 = v1();
+	const counterId2 = v1();
+
+	const [countersConfig, setCountersConfig] = useState<Array<CounterConfigType>>([
+		{ counterId: counterId1, startValue: 5, endValue: 10 },
+		{ counterId: counterId2, startValue: 3, endValue: 6 },
 	]);
 
-	useEffect(() => {
-		countersConfig.forEach(c => {
-			const counterLocalStorage = localStorage.getItem(c.counterId);
-
-			if (counterLocalStorage) {
-				const { startValue, endValue, currentValue } = JSON.parse(counterLocalStorage);
-				localStorage.setItem(c.counterId,
-					JSON.stringify({ startValue, endValue, currentValue }));
-			} else {
-				const { startValue, endValue } = c;
-				localStorage.setItem(c.counterId,
-					JSON.stringify({ startValue, endValue, currentValue: startValue }));
-			}
-		});
-	}, []);
-
-	const currentCounterValuesCreator = countersConfig.reduce<Record<string, number>>((acc,
-		curr): CurrentValueType => {
-
-		const counterLocalStorage = localStorage.getItem(curr.counterId);
-		acc[curr.counterId] =
-			counterLocalStorage ? JSON.parse(counterLocalStorage).currentValue : curr.startValue;
-
-		return acc;
-
-	}, {});
-
-	const [currentCounterValues, setCurrentCounterValues] = useState(currentCounterValuesCreator);
-
-	const trackingChangesInInputValuesCreator = countersConfig.reduce<Record<string, InputValuesType>>(
-		(acc,
-			curr): trackingChangesInInputValuesType => {
-
-			const counterLocalStorage = localStorage.getItem(curr.counterId);
-
-			acc[curr.counterId] = {
-				startValue: counterLocalStorage
-					? JSON.parse(counterLocalStorage).startValue
-					: curr.startValue,
-				endValue: counterLocalStorage ? JSON.parse(counterLocalStorage).endValue : curr.endValue,
-			};
-
-			return acc;
-
-		},
-		{});
+	const [currentCounterValues, setCurrentCounterValues] = useState({
+		[counterId1]: countersConfig[0].startValue,
+		[counterId2]: countersConfig[1].startValue,
+	});
 
 	const [trackingChangesInInputValues, setTrackingChangesInInputValues] = useState<trackingChangesInInputValuesType>(
-		trackingChangesInInputValuesCreator);
+		{
+			[counterId1]: {
+				startValue: countersConfig[0].startValue,
+				endValue: countersConfig[0].endValue,
+			},
+			[counterId2]: {
+				startValue: countersConfig[1].startValue,
+				endValue: countersConfig[1].endValue,
+			},
+		});
 
 	const increment = (counterId: string) => {
 		setCurrentCounterValues({
@@ -106,7 +61,7 @@ function App() {
 		if (configForCounter) {
 			setCurrentCounterValues({
 				...currentCounterValues,
-				[counterId]: configForCounter.startValue,
+				[counterId]: configForCounter?.startValue,
 			});
 		}
 	};
