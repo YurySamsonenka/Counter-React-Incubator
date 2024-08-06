@@ -3,75 +3,69 @@ import './CounterSetting.style.css';
 import { Button } from '../button/Button';
 
 export type CounterSettingPropsType = {
-	counterId: string
 	startValue: number
 	endValue: number
-	startValueFromInput: number
-	endValueFromInput: number
-	onChangeStartValueSetting: (e: React.ChangeEvent<HTMLInputElement>, counterId: string) => void
-	onChangeEndValueSetting: (e: React.ChangeEvent<HTMLInputElement>, counterId: string) => void
-	setCounterSettings: (counterId: string, startValue: number, endValue: number) => void
+	startInputValue: number
+	endInputValue: number
+	onChangeStartInputValue: (e: React.ChangeEvent<HTMLInputElement>) => void
+	onChangeEndInputValue: (e: React.ChangeEvent<HTMLInputElement>) => void
+	setCounterSetting: (startValue: number, endValue: number) => void
 }
 
 export const CounterSetting = ({
-	counterId,
 	startValue,
 	endValue,
-	startValueFromInput,
-	endValueFromInput,
-	onChangeStartValueSetting,
-	onChangeEndValueSetting,
-	setCounterSettings,
+	startInputValue,
+	endInputValue,
+	onChangeStartInputValue,
+	onChangeEndInputValue,
+	setCounterSetting,
 }: CounterSettingPropsType) => {
 
-	const onChangeStartValueSettingHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-		onChangeStartValueSetting(
-			e,
-			counterId);
+	const onChangeStartInputValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		onChangeStartInputValue(e);
 	}
 
-	const onChangeEndValueSettingHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-		onChangeEndValueSetting(
-			e,
-			counterId);
+	const onChangeEndInputValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		onChangeEndInputValue(e);
 	}
 
-	const setCounterSettingsHandler = () => {
-		setCounterSettings(counterId, startValueFromInput, endValueFromInput);
+	const setCounterSettingHandler = () => {
+		setCounterSetting(startInputValue, endInputValue);
 	};
 
-	const checks = [startValueFromInput < 0,
-		startValueFromInput > endValueFromInput - 1,
-		startValue === startValueFromInput,
-		endValue === endValueFromInput];
+	// const checks = [startInputValue < 0,
+	// 	startInputValue > endInputValue - 1,
+	// 	startValue === startInputValue,
+	// 	endValue === endInputValue];
 
 	return (
 		<div className={'counter-display'}>
 			<div className={`setting`}>
 				<div>
 					<label htmlFor="maxValue">max value:</label>
-					<input value={endValueFromInput}
+					<input value={endInputValue}
 						type={'number'}
 						id={'maxValue'}
-						className={`setting-input ${checks[1]
+						className={`setting-input ${startInputValue > endInputValue - 1
 							? 'warning'
 							: ''}`}
-						onChange={onChangeEndValueSettingHandler} />
+						onChange={onChangeEndInputValueHandler} />
 				</div>
 				<div>
 					<label htmlFor="startValue">start value:</label>
-					<input value={startValueFromInput}
+					<input value={startInputValue}
 						type={'number'}
 						id={'startValue'}
-						className={`setting-input ${checks[0] || checks[1] ? 'warning' : ''}`}
-						onChange={onChangeStartValueSettingHandler} />
+						className={`setting-input ${startInputValue < 0 || startInputValue > endInputValue - 1 ? 'warning' : ''}`}
+						onChange={onChangeStartInputValueHandler} />
 				</div>
 			</div>
 			<div className={'btn-block'}>
 				<Button title={'set'}
-					onClick={setCounterSettingsHandler}
-					disabled={checks[0] || checks[1] ||
-						(checks[2] && checks[3])} />
+					onClick={setCounterSettingHandler}
+					disabled={startInputValue < 0 || startInputValue > endInputValue - 1 ||
+						(startValue === startInputValue && endValue === endInputValue)} />
 			</div>
 		</div>
 	)

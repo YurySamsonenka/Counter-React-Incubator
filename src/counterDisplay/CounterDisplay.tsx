@@ -3,22 +3,20 @@ import './CounterDisplay.style.css';
 import { Button } from '../button/Button';
 
 export type CounterPropsType = {
-	counterId: string
 	startValue: number
 	endValue: number
-	startValueFromInput: number
-	endValueFromInput: number
+	startInputValue: number
+	endInputValue: number
 	currentValue: number
-	increment: (counterId: string, prevValue: number) => void
-	resetIncrement: (counterId: string) => void
+	increment: () => void
+	resetIncrement: () => void
 }
 
 export const CounterDisplay = ({
-	counterId,
 	startValue,
 	endValue,
-	startValueFromInput,
-	endValueFromInput,
+	startInputValue,
+	endInputValue,
 	currentValue,
 	increment,
 	resetIncrement,
@@ -27,17 +25,17 @@ export const CounterDisplay = ({
 	const isResetDisabled = currentValue === startValue;
 
 	const onClickIncrementHandler = () => {
-		increment(counterId, startValue);
+		increment();
 	};
 
 	const onClickResetIncrementHandler = () => {
-		resetIncrement(counterId);
+		resetIncrement();
 	};
 
-	const checks = [startValueFromInput < 0,
-		startValueFromInput > endValueFromInput - 1,
-		startValueFromInput !== startValue,
-		endValueFromInput !== endValue];
+	// const checks = [startInputValue < 0,
+	// 	startInputValue > endInputValue - 1,
+	// 	startInputValue !== startValue,
+	// 	endInputValue !== endValue];
 
 	return (
 		<div className={'counter-display'}>
@@ -45,9 +43,9 @@ export const CounterDisplay = ({
 				? 'final-value'
 				: ''} display`}>{currentValue}</div>
 			<div className={'btn-block'}>
-				{checks[0] || checks[1]
+				{startInputValue < 0 || startInputValue > endInputValue - 1
 					? <div className={'message message_warning'}>Incorrect value!</div>
-					: checks[2] || checks[3]
+					: startInputValue !== startValue || endInputValue !== endValue
 						? <div className={'message'}>enter value and press 'set'</div>
 						: <>
 							<Button title={'inc'} onClick={onClickIncrementHandler} disabled={isIncDisabled} />
