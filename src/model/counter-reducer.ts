@@ -26,11 +26,11 @@ export type SetCounterSettingType = {
 	}
 }
 
-const initialState:StateType = {
-	startValue: 5,
+const initialState: StateType = {
+	startValue: 4,
 	endValue: 10,
-	currentValue: 5,
-	startInputValue: 5,
+	currentValue: 4,
+	startInputValue: 4,
 	endInputValue: 10,
 };
 
@@ -55,7 +55,8 @@ export const counterReducer = (state: StateType = initialState, action: ActionsT
 			};
 		}
 		default:
-			throw new Error('dont understand this type');
+			debugger
+			return state;
 	}
 };
 
