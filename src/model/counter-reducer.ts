@@ -2,11 +2,9 @@ export type StateType = {
 	startValue: number
 	endValue: number
 	currentValue: number
-	startInputValue: number
-	endInputValue: number
+	minInputValue: number
+	maxInputValue: number
 }
-
-type ActionsType = IncrementCounterActionType | ResetCounterActionType | SetCounterSettingType
 
 export type IncrementCounterActionType = {
 	type: 'INCREMENT-COUNTER'
@@ -19,19 +17,46 @@ export type ResetCounterActionType = {
 export type SetCounterSettingType = {
 	type: 'SET-COUNTER-SETTING',
 	payload: {
-		startInputValue: number
-		endInputValue: number
+		minInputValue: number
+		maxInputValue: number
 		currentValue: number
 
 	}
 }
 
-const initialState: StateType = {
-	startValue: 4,
-	endValue: 10,
-	currentValue: 4,
-	startInputValue: 4,
-	endInputValue: 10,
+export type SetCounterMaxValueType = {
+	type: 'SET-COUNTER-MAX-VALUE',
+	payload: {
+		maxInputValue: number,
+	}
+}
+
+export type SetCounterMinValueType = {
+	type: 'SET-COUNTER-MIN-VALUE',
+	payload: {
+		minInputValue: number,
+	}
+}
+
+type ActionsType =
+	IncrementCounterActionType
+	| ResetCounterActionType
+	| SetCounterSettingType
+	| SetCounterMaxValueType
+	| SetCounterMinValueType
+
+const START_VALUE = 4;
+const END_VALUE = 11;
+const CURRENT_VALUE = START_VALUE;
+const MIN_INPUT_VALUE = START_VALUE;
+const MAX_INPUT_VALUE = END_VALUE;
+
+export const initialState: StateType = {
+	startValue: START_VALUE,
+	endValue: END_VALUE,
+	currentValue: CURRENT_VALUE,
+	minInputValue: MIN_INPUT_VALUE,
+	maxInputValue: MAX_INPUT_VALUE,
 };
 
 export const counterReducer = (state: StateType = initialState, action: ActionsType) => {
@@ -49,13 +74,25 @@ export const counterReducer = (state: StateType = initialState, action: ActionsT
 		case 'SET-COUNTER-SETTING': {
 			return {
 				...state,
-				startValue: action.payload.startInputValue,
-				endValue: action.payload.endInputValue,
-				currentValue: action.payload.startInputValue,
+				startValue: action.payload.minInputValue,
+				endValue: action.payload.maxInputValue,
+				currentValue: action.payload.minInputValue,
+			};
+		}
+		case 'SET-COUNTER-MAX-VALUE': {
+			console.log(action);
+			return {
+				...state,
+				maxInputValue: action.payload.maxInputValue,
+			};
+		}
+		case 'SET-COUNTER-MIN-VALUE': {
+			return {
+				...state,
+				minInputValue: action.payload.minInputValue,
 			};
 		}
 		default:
-			debugger
 			return state;
 	}
 };
@@ -71,5 +108,23 @@ export const ResetCounterActionCreator = (): ResetCounterActionType => {
 export const SetCounterSettingActionCreator = (startInputValue: number,
 	endInputValue: number,
 	currentValue: number): SetCounterSettingType => {
-	return { type: 'SET-COUNTER-SETTING', payload: { startInputValue, endInputValue, currentValue } };
+	return {
+		type: 'SET-COUNTER-SETTING',
+		payload: { minInputValue: startInputValue, maxInputValue: endInputValue, currentValue },
+	};
+};
+
+export const SetCounterMaxValueActionCreator = (endInputValue: number): SetCounterMaxValueType => {
+	console.log(endInputValue);
+	return {
+		type: 'SET-COUNTER-MAX-VALUE',
+		payload: { maxInputValue: endInputValue },
+	};
+};
+
+export const SetCounterMinValueActionCreator = (startInputValue: number): SetCounterMinValueType => {
+	return {
+		type: 'SET-COUNTER-MIN-VALUE',
+		payload: { minInputValue: startInputValue },
+	};
 };

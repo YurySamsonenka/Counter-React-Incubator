@@ -5,13 +5,9 @@ test('increment counter', () => {
 		startValue: 5,
 		endValue: 10,
 		currentValue: 5,
-		startInputValue: 5,
-		endInputValue: 10,
+		minInputValue: 5,
+		maxInputValue: 10,
 	};
-
-	// const action: IncrementCounterActionType = {
-	// 	type: 'INCREMENT-COUNTER',
-	// };
 
 	const endState = counterReducer(startState, IncrementCounterActionCreator());
 
@@ -23,13 +19,9 @@ test('reset counter', () => {
 		startValue: 5,
 		endValue: 10,
 		currentValue: 8,
-		startInputValue: 5,
-		endInputValue: 10,
+		minInputValue: 5,
+		maxInputValue: 10,
 	};
-
-	// const action: ResetCounterActionType = {
-	// 	type: 'RESET-COUNTER',
-	// } as const;
 
 	const endState = counterReducer(startState, ResetCounterActionCreator());
 
@@ -37,24 +29,15 @@ test('reset counter', () => {
 });
 
 test('set counter setting', () => {
-	const startState: StateType = {
+	const startState: any = {
 		startValue: 5,
 		endValue: 10,
 		currentValue: 8,
-		startInputValue: 3,
-		endInputValue: 15,
+		minInputValue: 3,
+		maxInputValue: 15,
 	};
 
-	// const action: SetCounterSettingType = {
-	// 	type: 'SET-COUNTER-SETTING',
-	// 	payload: {
-	// 		startInputValue: startState.startInputValue,
-	// 		endInputValue: startState.endInputValue,
-	// 		currentValue: startState.startInputValue
-	// 	},
-	// };
-
-	const endState = counterReducer(startState, SetCounterSettingActionCreator(startState.startInputValue,startState.endInputValue, startState.startInputValue));
+	const endState = counterReducer(startState, SetCounterSettingActionCreator(startState?.minInputValue,startState.maxInputValue, startState.minInputValue));
 
 	expect(endState.startValue).toBe(3);
 	expect(endState.endValue).toBe(15);

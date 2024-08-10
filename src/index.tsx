@@ -2,8 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
-import App from './App';
-import AppWithReducers from './AppWithReducers';
 import { Provider } from 'react-redux';
 import { store } from './state/store';
 import AppWithRedux from './AppWithRedux';
