@@ -29,15 +29,15 @@ test('reset counter', () => {
 });
 
 test('set counter setting', () => {
-	const startState: any = {
+	const startState: StateType = {
 		startValue: 5,
-		endValue: 10,
+		maxValue: 10,
 		currentValue: 8,
-		minInputValue: 3,
+		startInputValue: 3,
 		maxInputValue: 15,
 	};
 
-	const endState = counterReducer(startState, SetCounterSettingActionCreator(startState?.minInputValue,startState.maxInputValue, startState.minInputValue));
+	const endState = counterReducer(startState, SetCounterSettingActionCreator(startState.startInputValue,startState.maxInputValue, startState.currentValue));
 
 	expect(endState.startValue).toBe(3);
 	expect(endState.maxValue).toBe(15);
