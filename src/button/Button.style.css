@@ -2,16 +2,17 @@
   font-family: inherit;
   font-size: 3rem;
   font-weight: 700;
+  display: flex;
+  align-items: center;
   cursor: pointer;
   color: var(--bgc-color);
   border: none;
   border-radius: 5px;
   background-color: var(--main-color);
-  display: flex;
-  align-items: center;
 }
 
 .button:disabled {
-  opacity: 0.5;
   cursor: auto;
+  pointer-events: none;
+  opacity: 0.5;
 }

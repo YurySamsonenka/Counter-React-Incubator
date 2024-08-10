@@ -1,4 +1,5 @@
 import './Button.style.css';
+import { memo } from 'react';
 
 type ButtonPropsType = {
   title: string
@@ -6,7 +7,7 @@ type ButtonPropsType = {
   disabled?: boolean
 }
 
-export const Button = ({ title, onClick, disabled }: ButtonPropsType) => {
+export const Button = memo(({ title, onClick, disabled }: ButtonPropsType) => {
   return (
     <button className={'button'} onClick={onClick} disabled={disabled}>{title}</button>);
-};
+});

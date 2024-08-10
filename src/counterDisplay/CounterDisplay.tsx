@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import './CounterDisplay.style.css';
 import { Button } from '../button/Button';
 
@@ -12,7 +12,7 @@ export type CounterPropsType = {
 	resetIncrement: () => void
 }
 
-export const CounterDisplay = ({
+export const CounterDisplay = (({
 	startValue,
 	maxValue,
 	startInputValue,
@@ -24,13 +24,13 @@ export const CounterDisplay = ({
 	const isIncDisabled = currentValue >= maxValue;
 	const isResetDisabled = currentValue === startValue;
 
-	const onClickIncrementHandler = () => {
+	const onClickIncrementHandler = useCallback(() => {
 		increment();
-	};
+	}, [increment]);
 
-	const onClickResetIncrementHandler = () => {
+	const onClickResetIncrementHandler = useCallback(() => {
 		resetIncrement();
-	};
+	}, [resetIncrement]);
 
 	// const checks = [startInputValue < 0,
 	// 	startInputValue > endInputValue - 1,
@@ -58,4 +58,4 @@ export const CounterDisplay = ({
 		</div>
 	)
 		;
-};
+});

@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useCallback } from 'react';
 import { CounterDisplay } from './counterDisplay/CounterDisplay';
 import { CounterSetting } from './counterSetting/CounterSetting';
 import { IncrementCounterActionCreator, ResetCounterActionCreator, SetCounterMaxValueActionCreator, SetCounterStartValueActionCreator, SetCounterSettingActionCreator, StateType } from './model/counter-reducer';
@@ -10,25 +10,25 @@ function App() {
 	const counter = useSelector<AppRootStateType, StateType>(state => state.counter);
 	const dispatch = useDispatch()
 
-	const increment = () => {
+	const increment = useCallback(() => {
 		dispatch(IncrementCounterActionCreator());
-	};
+	}, [dispatch]);
 
-	const resetIncrement = () => {
+	const resetIncrement = useCallback(() => {
 		dispatch(ResetCounterActionCreator());
-	};
+	}, [dispatch]);
 
-	const onChangeStartInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const onChangeStartInputValue = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
 		dispatch(SetCounterStartValueActionCreator(+e.currentTarget.value))
-	};
+	}, [dispatch]);
 
-	const onChangeEndInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+	const onChangeEndInputValue = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
 		dispatch(SetCounterMaxValueActionCreator(+e.currentTarget.value))
-	};
+	}, [dispatch]);
 
-	const setCounterSetting = (startValue: number, endValue: number) => {
+	const setCounterSetting = useCallback((startValue: number, endValue: number) => {
 		dispatch(SetCounterSettingActionCreator(startValue, endValue, counter.currentValue));
-	};
+	}, [dispatch]);
 
 	return (
 		<div className="App">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo, useCallback } from 'react';
 import './CounterSetting.style.css';
 import { Button } from '../button/Button';
 
@@ -12,7 +12,7 @@ export type CounterSettingPropsType = {
 	setCounterSetting: (startValue: number, endValue: number) => void
 }
 
-export const CounterSetting = ({
+export const CounterSetting = memo(({
 	startValue,
 	maxValue,
 	startInputValue,
@@ -24,15 +24,15 @@ export const CounterSetting = ({
 
 	const onChangeStartInputValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		onChangeStartInputValue(e);
-	}
+	};
 
 	const onChangeMaxInputValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		onChangeMaxInputValue(e);
-	}
-
-	const setCounterSettingHandler = () => {
-		setCounterSetting(startInputValue, maxInputValue);
 	};
+
+	const setCounterSettingHandler = useCallback(() => {
+		setCounterSetting(startInputValue, maxInputValue);
+	}, [setCounterSetting, startInputValue, maxInputValue]);
 
 	// const checks = [startInputValue < 0,
 	// 	startInputValue > endInputValue - 1,
@@ -57,7 +57,9 @@ export const CounterSetting = ({
 					<input value={startInputValue}
 						type={'number'}
 						id={'startValue'}
-						className={`setting-input ${startInputValue < 0 || startInputValue > maxInputValue - 1 ? 'warning' : ''}`}
+						className={`setting-input ${startInputValue < 0 || startInputValue > maxInputValue - 1
+							? 'warning'
+							: ''}`}
 						onChange={onChangeStartInputValueHandler} />
 				</div>
 			</div>
@@ -70,4 +72,4 @@ export const CounterSetting = ({
 		</div>
 	)
 		;
-};
+});
