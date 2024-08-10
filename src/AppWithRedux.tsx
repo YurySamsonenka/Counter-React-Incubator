@@ -2,7 +2,7 @@ import './App.css';
 import React from 'react';
 import { CounterDisplay } from './counterDisplay/CounterDisplay';
 import { CounterSetting } from './counterSetting/CounterSetting';
-import { IncrementCounterActionCreator, ResetCounterActionCreator, SetCounterMaxValueActionCreator, SetCounterMinValueActionCreator, SetCounterSettingActionCreator, StateType } from './model/counter-reducer';
+import { IncrementCounterActionCreator, ResetCounterActionCreator, SetCounterMaxValueActionCreator, SetCounterStartValueActionCreator, SetCounterSettingActionCreator, StateType } from './model/counter-reducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootStateType } from './state/store';
 
@@ -19,7 +19,7 @@ function App() {
 	};
 
 	const onChangeStartInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-		dispatch(SetCounterMinValueActionCreator(+e.currentTarget.value))
+		dispatch(SetCounterStartValueActionCreator(+e.currentTarget.value))
 	};
 
 	const onChangeEndInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,20 +35,20 @@ function App() {
 			<div className={'counter'}>
 				<CounterDisplay
 					startValue={counter.startValue}
-					endValue={counter.endValue}
-					startInputValue={counter.minInputValue}
-					endInputValue={counter.maxInputValue}
+					maxValue={counter.maxValue}
+					startInputValue={counter.startInputValue}
+					maxInputValue={counter.maxInputValue}
 					currentValue={counter.currentValue}
 					increment={increment}
 					resetIncrement={resetIncrement}
 				/>
 				<CounterSetting
 					startValue={counter.startValue}
-					endValue={counter.endValue}
-					startInputValue={counter.minInputValue}
-					endInputValue={counter.maxInputValue}
+					maxValue={counter.maxValue}
+					startInputValue={counter.startInputValue}
+					maxInputValue={counter.maxInputValue}
 					onChangeStartInputValue={onChangeStartInputValue}
-					onChangeEndInputValue={onChangeEndInputValue}
+					onChangeMaxInputValue={onChangeEndInputValue}
 					setCounterSetting={setCounterSetting}
 				/>
 			</div>

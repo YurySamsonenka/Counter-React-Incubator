@@ -5,10 +5,10 @@ import { CounterSetting } from './counterSetting/CounterSetting';
 
 function App() {
 	const [startValue, setStartValue] = useState(5);
-	const [endValue, setEndValue] = useState(10);
+	const [maxValue, setMaxValue] = useState(10);
 	const [currentValue, setCurrentValue] = useState(5);
 	const [startInputValue, setStartInputValue] = useState(5);
-	const [endInputValue, setEndInputValue] = useState(10);
+	const [maxInputValue, setMaxInputValue] = useState(10);
 
 	const increment = () => {
 		setCurrentValue(prevState => prevState + 1);
@@ -22,13 +22,13 @@ function App() {
 		setStartInputValue(+e.currentTarget.value);
 	};
 
-	const onChangeEndInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-		setEndInputValue(+e.currentTarget.value);
+	const onChangeMaxInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setMaxInputValue(+e.currentTarget.value);
 	};
 
 	const setCounterSetting = (startValue: number, endValue: number) => {
 		setStartValue(startValue);
-		setEndValue(endValue);
+		setMaxValue(endValue);
 		setCurrentValue(startValue);
 	};
 
@@ -37,20 +37,20 @@ function App() {
 			<div className={'counter'}>
 				<CounterDisplay
 					startValue={startValue}
-					endValue={endValue}
+					maxValue={maxValue}
 					startInputValue={startInputValue}
-					endInputValue={endInputValue}
+					maxInputValue={maxInputValue}
 					currentValue={currentValue}
 					increment={increment}
 					resetIncrement={resetIncrement}
 				/>
 				<CounterSetting
 					startValue={startValue}
-					endValue={endValue}
+					maxValue={maxValue}
 					startInputValue={startInputValue}
-					endInputValue={endInputValue}
+					maxInputValue={maxInputValue}
 					onChangeStartInputValue={onChangeStartInputValue}
-					onChangeEndInputValue={onChangeEndInputValue}
+					onChangeMaxInputValue={onChangeMaxInputValue}
 					setCounterSetting={setCounterSetting}
 				/>
 			</div>

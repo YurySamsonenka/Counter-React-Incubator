@@ -3,9 +3,9 @@ import { counterReducer, IncrementCounterActionCreator, ResetCounterActionCreato
 test('increment counter', () => {
 	const startState: StateType = {
 		startValue: 5,
-		endValue: 10,
+		maxValue: 10,
 		currentValue: 5,
-		minInputValue: 5,
+		startInputValue: 5,
 		maxInputValue: 10,
 	};
 
@@ -17,9 +17,9 @@ test('increment counter', () => {
 test('reset counter', () => {
 	const startState: StateType = {
 		startValue: 5,
-		endValue: 10,
+		maxValue: 10,
 		currentValue: 8,
-		minInputValue: 5,
+		startInputValue: 5,
 		maxInputValue: 10,
 	};
 
@@ -40,6 +40,6 @@ test('set counter setting', () => {
 	const endState = counterReducer(startState, SetCounterSettingActionCreator(startState?.minInputValue,startState.maxInputValue, startState.minInputValue));
 
 	expect(endState.startValue).toBe(3);
-	expect(endState.endValue).toBe(15);
+	expect(endState.maxValue).toBe(15);
 	expect(endState.currentValue).toBe(3);
 });

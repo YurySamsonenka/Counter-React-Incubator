@@ -4,21 +4,21 @@ import { Button } from '../button/Button';
 
 export type CounterSettingPropsType = {
 	startValue: number
-	endValue: number
+	maxValue: number
 	startInputValue: number
-	endInputValue: number
+	maxInputValue: number
 	onChangeStartInputValue: (e: React.ChangeEvent<HTMLInputElement>) => void
-	onChangeEndInputValue: (e: React.ChangeEvent<HTMLInputElement>) => void
+	onChangeMaxInputValue: (e: React.ChangeEvent<HTMLInputElement>) => void
 	setCounterSetting: (startValue: number, endValue: number) => void
 }
 
 export const CounterSetting = ({
 	startValue,
-	endValue,
+	maxValue,
 	startInputValue,
-	endInputValue,
+	maxInputValue,
 	onChangeStartInputValue,
-	onChangeEndInputValue,
+	onChangeMaxInputValue,
 	setCounterSetting,
 }: CounterSettingPropsType) => {
 
@@ -26,12 +26,12 @@ export const CounterSetting = ({
 		onChangeStartInputValue(e);
 	}
 
-	const onChangeEndInputValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-		onChangeEndInputValue(e);
+	const onChangeMaxInputValueHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		onChangeMaxInputValue(e);
 	}
 
 	const setCounterSettingHandler = () => {
-		setCounterSetting(startInputValue, endInputValue);
+		setCounterSetting(startInputValue, maxInputValue);
 	};
 
 	// const checks = [startInputValue < 0,
@@ -44,28 +44,28 @@ export const CounterSetting = ({
 			<div className={`setting`}>
 				<div>
 					<label htmlFor="maxValue">max value:</label>
-					<input value={endInputValue}
+					<input value={maxInputValue}
 						type={'number'}
 						id={'maxValue'}
-						className={`setting-input ${startInputValue > endInputValue - 1
+						className={`setting-input ${startInputValue > maxInputValue - 1
 							? 'warning'
 							: ''}`}
-						onChange={onChangeEndInputValueHandler} />
+						onChange={onChangeMaxInputValueHandler} />
 				</div>
 				<div>
 					<label htmlFor="startValue">start value:</label>
 					<input value={startInputValue}
 						type={'number'}
 						id={'startValue'}
-						className={`setting-input ${startInputValue < 0 || startInputValue > endInputValue - 1 ? 'warning' : ''}`}
+						className={`setting-input ${startInputValue < 0 || startInputValue > maxInputValue - 1 ? 'warning' : ''}`}
 						onChange={onChangeStartInputValueHandler} />
 				</div>
 			</div>
 			<div className={'btn-block'}>
 				<Button title={'set'}
 					onClick={setCounterSettingHandler}
-					disabled={startInputValue < 0 || startInputValue > endInputValue - 1 ||
-						(startValue === startInputValue && endValue === endInputValue)} />
+					disabled={startInputValue < 0 || startInputValue > maxInputValue - 1 ||
+						(startValue === startInputValue && maxValue === maxInputValue)} />
 			</div>
 		</div>
 	)

@@ -4,9 +4,9 @@ import { Button } from '../button/Button';
 
 export type CounterPropsType = {
 	startValue: number
-	endValue: number
+	maxValue: number
 	startInputValue: number
-	endInputValue: number
+	maxInputValue: number
 	currentValue: number
 	increment: () => void
 	resetIncrement: () => void
@@ -14,14 +14,14 @@ export type CounterPropsType = {
 
 export const CounterDisplay = ({
 	startValue,
-	endValue,
+	maxValue,
 	startInputValue,
-	endInputValue,
+	maxInputValue,
 	currentValue,
 	increment,
 	resetIncrement,
 }: CounterPropsType) => {
-	const isIncDisabled = currentValue >= endValue;
+	const isIncDisabled = currentValue >= maxValue;
 	const isResetDisabled = currentValue === startValue;
 
 	const onClickIncrementHandler = () => {
@@ -39,13 +39,13 @@ export const CounterDisplay = ({
 
 	return (
 		<div className={'counter-display'}>
-			<div className={`${currentValue >= endValue
+			<div className={`${currentValue >= maxValue
 				? 'final-value'
 				: ''} display`}>{currentValue}</div>
 			<div className={'btn-block'}>
-				{startInputValue < 0 || startInputValue > endInputValue - 1
+				{startInputValue < 0 || startInputValue > maxInputValue - 1
 					? <div className={'message message_warning'}>Incorrect value!</div>
-					: startInputValue !== startValue || endInputValue !== endValue
+					: startInputValue !== startValue || maxInputValue !== maxValue
 						? <div className={'message'}>enter value and press 'set'</div>
 						: <>
 							<Button title={'inc'} onClick={onClickIncrementHandler} disabled={isIncDisabled} />

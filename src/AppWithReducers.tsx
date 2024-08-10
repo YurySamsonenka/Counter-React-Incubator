@@ -2,7 +2,7 @@ import './App.css';
 import React, { useReducer } from 'react';
 import { CounterDisplay } from './counterDisplay/CounterDisplay';
 import { CounterSetting } from './counterSetting/CounterSetting';
-import { counterReducer, IncrementCounterActionCreator, initialState, ResetCounterActionCreator, SetCounterMaxValueActionCreator, SetCounterMinValueActionCreator, SetCounterSettingActionCreator } from './model/counter-reducer';
+import { counterReducer, IncrementCounterActionCreator, initialState, ResetCounterActionCreator, SetCounterMaxValueActionCreator, SetCounterStartValueActionCreator, SetCounterSettingActionCreator } from './model/counter-reducer';
 
 function App() {
 	const [counter, dispatchToCounter] = useReducer(counterReducer, initialState);
@@ -16,7 +16,7 @@ function App() {
 	};
 
 	const onChangeStartInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
-		dispatchToCounter(SetCounterMinValueActionCreator(+e.currentTarget.value))
+		dispatchToCounter(SetCounterStartValueActionCreator(+e.currentTarget.value))
 	};
 
 	const onChangeEndInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,20 +32,20 @@ function App() {
 			<div className={'counter'}>
 				<CounterDisplay
 					startValue={counter.startValue}
-					endValue={counter.endValue}
-					startInputValue={counter.minInputValue}
-					endInputValue={counter.maxInputValue}
+					maxValue={counter.maxValue}
+					startInputValue={counter.startInputValue}
+					maxInputValue={counter.maxInputValue}
 					currentValue={counter.currentValue}
 					increment={increment}
 					resetIncrement={resetIncrement}
 				/>
 				<CounterSetting
 					startValue={counter.startValue}
-					endValue={counter.endValue}
-					startInputValue={counter.minInputValue}
-					endInputValue={counter.maxInputValue}
+					maxValue={counter.maxValue}
+					startInputValue={counter.startInputValue}
+					maxInputValue={counter.maxInputValue}
 					onChangeStartInputValue={onChangeStartInputValue}
-					onChangeEndInputValue={onChangeEndInputValue}
+					onChangeMaxInputValue={onChangeEndInputValue}
 					setCounterSetting={setCounterSetting}
 				/>
 			</div>
