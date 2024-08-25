@@ -44,7 +44,7 @@ type ActionsType =
 	| SetCounterMaxValueType
 	| SetCounterMinValueType
 
-const START_VALUE = 4;
+const START_VALUE = 5;
 const MAX_VALUE = 11;
 const CURRENT_VALUE = START_VALUE;
 const START_INPUT_VALUE = START_VALUE;
@@ -58,7 +58,7 @@ export const initialState: StateType = {
 	maxInputValue: MAX_INPUT_VALUE,
 };
 
-export const counterReducer = (state: StateType = initialState, action: ActionsType) => {
+export const counterReducer = (state: StateType = initialState, action: ActionsType): StateType => {
 	switch (action.type) {
 		case 'INCREMENT-COUNTER': {
 			return {
