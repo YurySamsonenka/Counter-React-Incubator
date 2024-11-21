@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Counter-React-Incubator/static/css/main.5e956448.css",
+    "main.js": "/Counter-React-Incubator/static/js/main.da823052.js",
+    "static/js/453.ed3810f9.chunk.js": "/Counter-React-Incubator/static/js/453.ed3810f9.chunk.js",
+    "index.html": "/Counter-React-Incubator/index.html",
+    "main.5e956448.css.map": "/Counter-React-Incubator/static/css/main.5e956448.css.map",
+    "main.da823052.js.map": "/Counter-React-Incubator/static/js/main.da823052.js.map",
+    "453.ed3810f9.chunk.js.map": "/Counter-React-Incubator/static/js/453.ed3810f9.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5e956448.css",
+    "static/js/main.da823052.js"
+  ]
+}
